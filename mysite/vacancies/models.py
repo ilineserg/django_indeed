@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Vacancy(models.Model):
-    company = models.ForeignKey('companies.Company', null=True, blank=True)
+    company = models.ForeignKey('companies.Company', null=True, blank=True, on_delete=models.CASCADE)
 
     job_key = models.CharField(max_length=200, unique=True)
     title = models.CharField(max_length=500)
@@ -21,7 +21,7 @@ class Vacancy(models.Model):
     company_link = models.CharField(max_length=2048, null=True, blank=True)
     company_uid = models.CharField(max_length=200, null=True, blank=True)
 
-    raw_data = JSONField(default='')
+    raw_data = JSONField(default=str)
 
     class Meta:
         db_table = 'vacancies'
