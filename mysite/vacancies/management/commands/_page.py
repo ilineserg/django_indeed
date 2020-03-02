@@ -1,12 +1,12 @@
 import json
 import re
 from bs4 import BeautifulSoup
+from django.conf import settings
 
-import _config as config
-from _utils import normalize_url, debug_log, colorize, Colors
+from vacancies.management.commands._utils import normalize_url, debug_log, colorize, Colors
 
-JOBS_URL = normalize_url(config.BASE_URL, config.JOBS_PATH)
-JOBS_DESC_URL = normalize_url(config.BASE_URL, config.JOBS_DESC_PATH)
+JOBS_URL = normalize_url(settings.INDEED_BASE_URL, settings.JOBS_PATH)
+JOBS_DESC_URL = normalize_url(settings.INDEED_BASE_URL, settings.JOBS_DESC_PATH)
 
 
 def get_vacancies_on_page(session, params):
