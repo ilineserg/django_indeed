@@ -5,12 +5,15 @@ class Company(models.Model):
 
     uid = models.CharField(max_length=200, unique=True)
 
-    name = models.TextField()
-    link = models.TextField()
-    about = models.TextField()
+    name = models.CharField(max_length=500, null=True, blank=True)
+    link = models.CharField(max_length=2048, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
 
-    headquarters = models.TextField()
-    employees = models.TextField()
-    industry = models.TextField()
-    revenue = models.TextField()
-    website = models.TextField()
+    headquarters = models.TextField(null=True, blank=True)
+    employees = models.TextField(null=True, blank=True)
+    industry = models.TextField(null=True, blank=True)
+    revenue = models.TextField(null=True, blank=True)
+    website = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'companies'
