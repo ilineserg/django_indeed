@@ -91,10 +91,7 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
                                 revenue=company_data.get('revenue')
                             )
 
-                            try:
-                                company.save()
-                            except Exception:
-                                continue
+                            company.save()
 
                             company_add += 1
                         else:
@@ -135,10 +132,7 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
                 vacancies_for_add.append(vacancy)
                 vacancies_add += 1
 
-            try:
-                Vacancy.objects.bulk_create(vacancies_for_add)
-            except Exception:
-                continue
+            Vacancy.objects.bulk_create(vacancies_for_add)
 
             total_company_add += company_add
             total_vacancies_add += vacancies_add
