@@ -104,6 +104,7 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
                     continue
 
                 exist_vacancy = Vacancy.objects.filter(job_key=job_key).first()
+                print(exist_vacancy)
 
                 if exist_vacancy:
                     continue
@@ -129,10 +130,22 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
                     company_id=company.id if company else None,
                     raw_data=vacancy_data
                 )
-                vacancies_for_add.append(vacancy)
+                _data = {'title': vacancy.title,
+                         'link': vacancy.link,
+                         'description_text': vacancy.description_text,
+                         'description_html': vacancy.description_html,
+                         'location': vacancy.location,
+                         'location_uid': vacancy.location_uid,
+                         'country': vacancy.company,
+                         'city': vacancy.city,
+                         'zip': vacancy.zip,
+                         'company_name': vacancy.company_name,
+                         'company_uid': vacancy.company_uid,
+                         'company_link': vacancy.company_link,
+                         'company_id': company.id if company else None,
+                         'raw_data': vacancy.raw_data}
+                Vacancy.objects.get_or_create(job_key=job_key, defaults=_data)
                 vacancies_add += 1
-
-            Vacancy.objects.bulk_create(vacancies_for_add)
 
             total_company_add += company_add
             total_vacancies_add += vacancies_add
