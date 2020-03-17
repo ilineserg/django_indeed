@@ -22,16 +22,16 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def add_arguments(self, parser):
-        # parser.add_argument('--search', type=str)
+        parser.add_argument('--search', type=str)
         parser.add_argument('-s', '--start', type=int)
         parser.add_argument('-q', '--quantity', type=int)
         parser.add_argument('-l', '--location', type=str)
 
     def handle(self, *args, **options):
         if options['location'] == 'by_cities':
-            parse_by_location(search='Sales', page=options['start'], quantity=options['quantity'])
+            parse_by_location(search=options['search'], page=options['start'], quantity=options['quantity'])
         elif options['location'] == 'all':
-            main_parse(search='Sales', page=options['start'], quantity=options['quantity'])
+            main_parse(search=options['search'], page=options['start'], quantity=options['quantity'])
 
 
 def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
@@ -52,8 +52,8 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
 
         params = {
             'start': start,
-            'sort': settings.DEFAULT_SORT,
-            'q': search
+            'sort': settings.DEFAULT_SORT
+            # 'q': search
         }
         if location:
             params.update({'l': location})
@@ -158,7 +158,7 @@ def main_parse(search, page, quantity, vacancy_on_page=10, location=None):
 
 
 def parse_by_location(search, page, quantity, vacancy_on_page=10):
-    location_list = locations.CITIES
+    location_list = locations.CITIES_MORE_1000
 
     for location in location_list:
         try:
