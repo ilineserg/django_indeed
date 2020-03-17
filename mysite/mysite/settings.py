@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'emails.apps.EmailsConfig',
+    'dnb.apps.DnbConfig',
+    'lusha.apps.LushaConfig',
     'companies.apps.CompaniesConfig',
     'vacancies.apps.VacanciesConfig',
     'django.contrib.admin',
