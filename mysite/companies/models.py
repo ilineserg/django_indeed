@@ -15,5 +15,9 @@ class Company(models.Model):
     revenue = models.TextField(null=True, blank=True)
     website = models.TextField(null=True, blank=True)
 
+    country_site = models.ForeignKey('country_sites.IndeedCountrySites',
+                                     null=True, blank=True,
+                                     on_delete=models.CASCADE)
+
     class Meta:
         db_table = 'companies'

@@ -36,10 +36,8 @@ def main_parse(start, end):
             continue
         print(company.id)
         print(company.country)
-        if company.country == 'United States' or \
-                company.country == 'United Kingdom' or \
-                company.country == 'Canada' or \
-                company.country == 'Australia':
+        print(company.link)
+        if company.country:
             r = session.get(company.link)
             soup = BeautifulSoup(r.text, 'html.parser')
             _data.update({'country': company.country})

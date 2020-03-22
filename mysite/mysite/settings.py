@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'country_sites.apps.CountrySitesConfig',
+    'locations.apps.LocationsConfig',
     'emails.apps.EmailsConfig',
     'dnb.apps.DnbConfig',
     'lusha.apps.LushaConfig',
@@ -82,9 +84,9 @@ DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql_psycopg2",
         'HOST': "127.0.0.1",
-        'NAME': "indeed",
-        'USER': "indeed",
-        'PASSWORD': "indeed",
+        'NAME': "indeed_3",
+        'USER': "indeed_3",
+        'PASSWORD': "indeed_3",
         'PORT': 5432,
     }
 }
@@ -129,7 +131,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-INDEED_BASE_URL = "https://www.indeed.com"
+INDEED_BASE_URL = {"usa": "https://www.indeed.com",
+                   "can": "https://www.ca.indeed.com",
+                   "aus": "https://www.au.indeed.com"}
 JOBS_PATH = "/jobs"
 JOBS_DESC_PATH = "/rpc/jobdescs"
 DEFAULT_SORT = 'date'
