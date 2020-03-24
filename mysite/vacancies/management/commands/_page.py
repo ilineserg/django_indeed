@@ -3,13 +3,16 @@ import re
 from bs4 import BeautifulSoup
 from django.conf import settings
 
+from country_sites.models import IndeedCountrySites
 from vacancies.management.commands._utils import normalize_url, debug_log, colorize, Colors
 
-JOBS_URL = normalize_url(settings.INDEED_BASE_URL, settings.JOBS_PATH)
-JOBS_DESC_URL = normalize_url(settings.INDEED_BASE_URL, settings.JOBS_DESC_PATH)
 
+def get_vacancies_on_page(country, session, params):
+    _counry = IndeedCountrySites.objects.get(code_iso=country)
+    print(_counry)
+    JOBS_URL = normalize_url(_counry.site, settings.JOBS_PATH)
+    JOBS_DESC_URL = normalize_url(_counry.site, settings.JOBS_DESC_PATH)
 
-def get_vacancies_on_page(session, params):
     r = session.get(url=JOBS_URL, params=params)
     try:
         r.raise_for_status()
