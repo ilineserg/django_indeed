@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apollo.apps.ApolloConfig',
+    'craft.apps.CraftConfig',
     'country_sites.apps.CountrySitesConfig',
     'locations.apps.LocationsConfig',
     'emails.apps.EmailsConfig',
