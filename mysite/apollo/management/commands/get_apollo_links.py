@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.management import BaseCommand
 
-from apollo.models import AppoloCompanyLinks
+from apollo.models import ApolloCompanyLinks
 
 session = requests.Session()
 session.headers.update(settings.HEADERS)
@@ -40,4 +40,4 @@ def main_parse():
                 _data = {}
                 _data.update({'title': company.text})
                 _data.update({'link': f"https://www.apollo.io/companies{company['href']}"})
-                AppoloCompanyLinks.objects.get_or_create(link=_data.get('link'), defaults=_data)
+                ApolloCompanyLinks.objects.get_or_create(link=_data.get('link'), defaults=_data)

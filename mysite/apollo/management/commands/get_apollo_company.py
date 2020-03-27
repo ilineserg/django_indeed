@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from bs4 import BeautifulSoup
 
-from dnb.models import IndusryDNB, CountryIndusryDNB, ShortCountryDNB, CompanyDNB
+from apollo.models import ApolloCompanyLinks
 
 
 session = requests.Session()
@@ -25,9 +25,8 @@ class Command(BaseCommand):
 
 
 def main_parse(start, end):
-    items_count = 0
-    scheme_link = 'https://www.dnb.com'
     _data = {}
+    links = ApolloCompanyLinks.objects.
     for i in range(start, end):
         try:
             company = ShortCountryDNB.objects.get(id=i)
