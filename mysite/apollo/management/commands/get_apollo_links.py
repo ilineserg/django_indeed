@@ -40,4 +40,4 @@ def main_parse():
                 _data = {}
                 _data.update({'name': company.text})
                 _data.update({'link': f"https://www.apollo.io/companies{company['href']}"})
-                AppoloCompanyLinks.object.get_or_create(link=link, default=_data)
+                AppoloCompanyLinks.objects.get_or_create(link=_data.get('link'), default=_data)
