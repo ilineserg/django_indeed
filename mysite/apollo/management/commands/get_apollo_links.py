@@ -19,11 +19,11 @@ class Command(BaseCommand):
         parser.add_argument('-e', '--end', type=int)
 
     def handle(self, *args, **options):
-        main_parse()
+        main_parse(options['start'])
 
 
-def main_parse():
-    for i in range(65, 91):
+def main_parse(start, end=91):
+    for i in range(start, end):
         print(f'we are on page {chr(i)}')
         r = session.get(f'https://www.apollo.io/directory/companies/{chr(i)}')
         soup = BeautifulSoup(r.text, 'lxml')
