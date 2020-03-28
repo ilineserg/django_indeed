@@ -26,7 +26,13 @@ class Command(BaseCommand):
 
 def main_parse(start, end):
     _data = {}
-    links = ApolloCompanyLinks.objects.
+    count_links = ApolloCompanyLinks.objects.count()
+    limit = 1000
+    offset = 0
+    while offset < count_links:
+        selection = ApolloCompanyLinks.objects.all()[offset:offset + limit]
+
+
     for i in range(start, end):
         try:
             company = ShortCountryDNB.objects.get(id=i)
