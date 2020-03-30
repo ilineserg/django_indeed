@@ -1,13 +1,14 @@
 import requests
 import json
 import time
+import pprint
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from bs4 import BeautifulSoup
 
-from apollo.models import ApolloCompanyLinks
+from apollo.models import ApolloCompanyLinks, ApolloCompany, ApolloEmployees, ApolloTechUsed
 
 
 session = requests.Session()
@@ -21,26 +22,76 @@ class Command(BaseCommand):
         parser.add_argument('-s', '--start', type=int)
 
     def handle(self, *args, **options):
-        main_parse(start=options['start'], end=options['end'])
+        main_parse()
 
 
-def main_parse(start, end):
+def main_parse():
     _data = {}
+    _technologies = {}
+    _employees = []
+    _employee = {}
+    technologies = None
+    employees = None
+
+
     count_links = ApolloCompanyLinks.objects.count()
-    limit = 1000
+    limit = 1001
     offset = 0
     while offset < count_links:
         selection = ApolloCompanyLinks.objects.all()[offset:offset + limit]
 
+        for s in selection:
+            r = session.get('https://www.apollo.io/companies/companies/Askredit-IFN-SA/5a9e4ef4a6da98d9467382d9')
+            soup = BeautifulSoup(r.text, 'html.parser')
 
+            script = soup.find('script', {'id': '__NEXT_DATA__'})
+            data = json.loads(script.text)
+            try:
+                _data.update({'company_id': data['query']['companyId']})
+                _data.update({'title': s.title})
+                _data.update({'link': s.link})
+                _data.update({'website': data['props']['pageProps']['data']['website_url']})
+                _data.update({'number_of_employees': data['props']['pageProps']['data']['employee_count']})
+                _data.update({'phone': data['props']['pageProps']['data']['phone_number']})
+                _data.update({'address': data['props']['pageProps']['data']['location']})
+                _data.update({'tags': data['props']['pageProps']['data']['keywords']})
+                _data.update({'description': data['props']['pageProps']['data']['description']})
+
+                technologies = data['props']['pageProps']['data']['technologies']
+
+                if technologies:
+                    print(technologies)
+                    #list(map(lambda x: x.update({'company': ApolloCompany.objects.filter(company_id=_data['company_id']).first()}), technologies))
+                    list(map(lambda x: x.update({'company': '!!!'}), technologies))
+                    #ApolloTechUsed.objects.bulk_create(technologies)
+
+                employees = data['props']['pageProps']['data']['people']
+
+                if employees:
+                    for e in employees:
+                        if e:
+                            _employee.update({'first_name': e['first_name']})
+                            _employee.update({'last_name': e['last_name']})
+                            for e_h in e['employment_history']:
+                                if e_h['current'] is True:
+                                    _employee.update({'position': e_h['title']})
+
+                            _employees.append(_employee)
+                            _employee = {}
+
+                print(_employees)
+            except Exception:
+                break
+            break
+
+        break
+
+    offset += limit
+
+    """
     for i in range(start, end):
-        try:
-            company = ShortCountryDNB.objects.get(id=i)
-        except Exception:
-            continue
-        print(company.id)
-        print(company.country)
-        print(company.link)
+
+
         if company.country:
             r = session.get(company.link)
             soup = BeautifulSoup(r.text, 'html.parser')
@@ -96,4 +147,4 @@ def main_parse(start, end):
             CompanyDNB.objects.get_or_create(link=_data['link'], defaults=_data)
             _data = {}
         else:
-            continue
+            continue"""
