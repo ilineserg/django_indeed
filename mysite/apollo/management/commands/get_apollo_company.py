@@ -31,9 +31,8 @@ def main_parse(start):
     _employees = []
     _employee = {}
 
-    #count_links = ApolloCompanyLinks.objects.count()
-    count_links = 1
-    limit = 1
+    count_links = ApolloCompanyLinks.objects.count()
+    limit = 1000
     offset = start
     while offset < count_links:
         selection = ApolloCompanyLinks.objects.all().order_by('id')[offset:offset + limit]
