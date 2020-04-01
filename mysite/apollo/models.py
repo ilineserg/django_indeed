@@ -10,6 +10,13 @@ class ApolloCompanyLinks(models.Model):
         db_table = 'apollo_company_links'
 
 
+class ApolloTags(models.Model):
+    title = models.CharField(max_length=500)
+
+    class Meta:
+        db_table = 'apollo_tags'
+
+
 class ApolloCompany(models.Model):
     company_id_apollo = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
@@ -20,7 +27,7 @@ class ApolloCompany(models.Model):
                                            blank=True)
     phone = models.CharField(max_length=500, null=True, blank=True)
     address = JSONField()
-    tags = models.CharField(max_length=2048, null=True, blank=True)
+    tags = models.ManyToManyField(ApolloTags)
     description = models.TextField(null=True, blank=True)
     social_links = JSONField(null=True, blank=True)
 

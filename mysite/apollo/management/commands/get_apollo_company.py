@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from bs4 import BeautifulSoup
 
-from apollo.models import ApolloCompanyLinks, ApolloCompany, ApolloEmployees, ApolloTechUsed
+from apollo.models import ApolloCompanyLinks, ApolloCompany, ApolloEmployees, ApolloTechUsed, ApolloTags
 
 
 session = requests.Session()
@@ -31,8 +31,9 @@ def main_parse(start):
     _employees = []
     _employee = {}
 
-    count_links = ApolloCompanyLinks.objects.count()
-    limit = 1000
+    #count_links = ApolloCompanyLinks.objects.count()
+    count_links = 1
+    limit = 1
     offset = start
     while offset < count_links:
         selection = ApolloCompanyLinks.objects.all().order_by('id')[offset:offset + limit]
@@ -55,11 +56,16 @@ def main_parse(start):
             _data.update({'number_of_employees': data['props']['pageProps']['data']['employee_count']})
             _data.update({'phone': data['props']['pageProps']['data']['phone_number']})
             _data.update({'address': data['props']['pageProps']['data']['location']})
-            _data.update({'tags': data['props']['pageProps']['data']['keywords']})
+
             _data.update({'description': data['props']['pageProps']['data']['description']})
             _data.update({'social_links': data['props']['pageProps']['data']['social_links']})
             technologies = data['props']['pageProps']['data']['technologies']
             ApolloCompany.objects.get_or_create(company_id_apollo=_data['company_id_apollo'], defaults=_data)
+
+            tags = data['props']['pageProps']['data']['keywords']
+            tags = [ApolloTags.objects.create(title=t) for t in tags]
+            company = ApolloCompany.objects.get(company_id_apollo=_data['company_id_apollo'])
+            company.tags.set(tags)
 
             if technologies:
                 list(map(lambda x: x.update({'company': ApolloCompany.objects.get(company_id_apollo=_data['company_id_apollo'])}), technologies))
