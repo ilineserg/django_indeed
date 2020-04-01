@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.fields import JSONField
 
 
@@ -12,7 +11,7 @@ class ApolloCompanyLinks(models.Model):
 
 
 class ApolloCompany(models.Model):
-    company_id = models.CharField(max_length=500)
+    company_id_apollo = models.CharField(max_length=500)
     title = models.CharField(max_length=500)
     link = models.CharField(max_length=2048, null=True, blank=True, unique=True)
     website = models.CharField(max_length=2048, null=True, blank=True,
