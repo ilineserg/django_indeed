@@ -22,6 +22,7 @@ class ApolloCompany(models.Model):
     address = JSONField()
     tags = models.CharField(max_length=2048, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    social_links = JSONField(null=True, blank=True)
 
     class Meta:
         db_table = 'apollo_company'
