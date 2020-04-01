@@ -57,6 +57,7 @@ def main_parse(start):
             _data.update({'address': data['props']['pageProps']['data']['location']})
             _data.update({'tags': data['props']['pageProps']['data']['keywords']})
             _data.update({'description': data['props']['pageProps']['data']['description']})
+            _data.update({'social_links': data['props']['pageProps']['data']['social_links']})
             technologies = data['props']['pageProps']['data']['technologies']
             ApolloCompany.objects.get_or_create(company_id_apollo=_data['company_id_apollo'], defaults=_data)
 
