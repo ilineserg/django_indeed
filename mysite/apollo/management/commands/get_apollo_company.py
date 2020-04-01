@@ -45,8 +45,10 @@ def main_parse(start):
 
             script = soup.find('script', {'id': '__NEXT_DATA__'})
             data = json.loads(script.text)
-
-            _data.update({'company_id_apollo': data['query']['companyId']})
+            try:
+                _data.update({'company_id_apollo': data['query']['companyId']})
+            except Exception:
+                continue
             _data.update({'title': s.title})
             _data.update({'link': s.link})
             _data.update({'website': data['props']['pageProps']['data']['website_url']})
