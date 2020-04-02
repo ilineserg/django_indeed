@@ -11,7 +11,7 @@ class ApolloCompanyLinks(models.Model):
 
 
 class ApolloTags(models.Model):
-    title = models.CharField(max_length=500)
+    title = models.CharField(max_length=2048)
 
     class Meta:
         db_table = 'apollo_tags'
